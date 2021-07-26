@@ -38,27 +38,37 @@ public class Encrypter {
     }
 
     public String rot13(String word) {
-        word = word.toUpperCase()
-                .replace("Ö", "OE")
-                .replace("Ä", "AE")
-                .replace("Ü", "UE") ;
+        word = cleanUp(word);
 
         StringBuilder sb = new StringBuilder();
         for (char character : word.toCharArray()) {
             Integer index = alphabetIndex.get(character);
-            if(index != null) {
+            if (index != null) {
                 Optional<Map.Entry<Character, Integer>> rotatedCharacter =
-                        alphabetIndex.entrySet()
-                                .stream()
-                                .filter(i -> isRotatedIndex(i, index))
-                                .findFirst();
                 rotatedCharacter.ifPresent(characterIntegerEntry -> sb.append(characterIntegerEntry.getKey()));
+                sb.append(getRotatedCharacter(index));
             } else {
                 sb.append(character);
             }
         }
         return sb.toString();
     }
+
+    private String cleanUp(String word) {
+        return word.toUpperCase()
+                .replace("Ö", "OE")
+                .replace("Ä", "AE")
+                .replace("Ü", "UE");
+    }
+
+    private void xxx(Integer index, StringBuilder sb){
+        Optional<Map.Entry<Character, Integer>> rotatedCharacter =
+                alphabetIndex.entrySet()
+                        .stream()
+                        .filter(i -> isRotatedIndex(i, index))
+                        .findFirst();
+    }
+
 
     private boolean isRotatedIndex(Map.Entry<Character, Integer> i, Integer index) {
         if (isIndexOverflown(index)) {
@@ -67,8 +77,8 @@ public class Encrypter {
         return i.getValue().equals(index + 13);
     }
 
-    private boolean isIndexOverflown(Integer index){
-       return index + 13 > 26;
+    private boolean isIndexOverflown(Integer index) {
+        return index + 13 > 26;
     }
 
 }
