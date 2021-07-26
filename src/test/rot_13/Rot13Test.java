@@ -6,10 +6,27 @@ import org.junit.jupiter.api.Test;
 
 class Rot13Test {
 
+    private final Encrypter encrypter = new Encrypter();
+
     @Test
-    void test(){
-        Encrypter encrypter = new Encrypter();
+    void testeBuchstaben(){
         Assertions.assertEquals("N", encrypter.rot13("A"));
     }
+
+    @Test
+    void testeWort(){
+        Assertions.assertEquals("NOP", encrypter.rot13("ABC"));
+    }
+
+    @Test
+    void testeWortMitKleinenBuchstaben(){
+        Assertions.assertEquals("NOP", encrypter.rot13("abc"));
+    }
+
+    @Test
+    void testeWortWiederVonVorne(){
+        Assertions.assertEquals("KLM", encrypter.rot13("XYZ"));
+    }
+
 
 }
