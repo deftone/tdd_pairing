@@ -38,16 +38,24 @@ public class Encrypter {
     }
 
     public String rot13(String word) {
+        word = word.toUpperCase()
+                .replace("Ö", "OE")
+                .replace("Ä", "AE")
+                .replace("Ü", "UE") ;
 
         StringBuilder sb = new StringBuilder();
-        for (char character : word.toUpperCase().toCharArray()) {
+        for (char character : word.toCharArray()) {
             Integer index = alphabetIndex.get(character);
-            Optional<Map.Entry<Character, Integer>> rotatedCharacter =
-                    alphabetIndex.entrySet()
-                            .stream()
-                            .filter(i -> isRotatedIndex(i, index))
-                            .findFirst();
-            rotatedCharacter.ifPresent(characterIntegerEntry -> sb.append(characterIntegerEntry.getKey()));
+            if(index != null) {
+                Optional<Map.Entry<Character, Integer>> rotatedCharacter =
+                        alphabetIndex.entrySet()
+                                .stream()
+                                .filter(i -> isRotatedIndex(i, index))
+                                .findFirst();
+                rotatedCharacter.ifPresent(characterIntegerEntry -> sb.append(characterIntegerEntry.getKey()));
+            } else {
+                sb.append(character);
+            }
         }
         return sb.toString();
     }
