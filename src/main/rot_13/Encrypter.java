@@ -7,6 +7,7 @@ import java.util.Optional;
 public class Encrypter {
 
     private static final Map<Character, Integer> alphabetIndex = new HashMap<>();
+    private int offset = 0;
 
     static {
         alphabetIndex.put('A', 1);
@@ -37,6 +38,10 @@ public class Encrypter {
         alphabetIndex.put('Z', 26);
     }
 
+    public Encrypter(int offset){
+        this.offset = offset % 26;
+    }
+
     public String rot13(String word) {
         word = cleanUp(word);
 
@@ -44,14 +49,24 @@ public class Encrypter {
         for (char character : word.toCharArray()) {
             Integer index = alphabetIndex.get(character);
             if (index != null) {
-                Optional<Map.Entry<Character, Integer>> rotatedCharacter =
-                rotatedCharacter.ifPresent(characterIntegerEntry -> sb.append(characterIntegerEntry.getKey()));
                 sb.append(getRotatedCharacter(index));
             } else {
                 sb.append(character);
             }
         }
         return sb.toString();
+    }
+
+    private Character getRotatedCharacter(Integer index) {
+        Optional<Map.Entry<Character, Integer>> rotatedCharacter =
+                alphabetIndex.entrySet()
+                        .stream()
+                        .filter(i -> isRotatedIndex(i, index))
+                        .findFirst();
+        if(rotatedCharacter.isPresent()){
+            return rotatedCharacter.get().getKey();
+        }
+        return null;
     }
 
     private String cleanUp(String word) {
@@ -61,24 +76,15 @@ public class Encrypter {
                 .replace("Ü", "UE");
     }
 
-    private void xxx(Integer index, StringBuilder sb){
-        Optional<Map.Entry<Character, Integer>> rotatedCharacter =
-                alphabetIndex.entrySet()
-                        .stream()
-                        .filter(i -> isRotatedIndex(i, index))
-                        .findFirst();
-    }
-
-
     private boolean isRotatedIndex(Map.Entry<Character, Integer> i, Integer index) {
         if (isIndexOverflown(index)) {
             index = index - 26;
         }
-        return i.getValue().equals(index + 13);
+        return i.getValue().equals(index + offset);
     }
 
     private boolean isIndexOverflown(Integer index) {
-        return index + 13 > 26;
+        return index + offset > 26;
     }
 
 }

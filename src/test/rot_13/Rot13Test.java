@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class Rot13Test {
 
-    private final Encrypter encrypter = new Encrypter();
+    private final Encrypter encrypter = new Encrypter(13);
 
     @Test
     void testeBuchstaben(){
