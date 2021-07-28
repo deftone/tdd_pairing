@@ -7,9 +7,17 @@ public class Galgenmaennchen {
     private final String LETTER_VALIDATOR = "[a-zA-Z]";
     private final String WORD_VALIDATOR = "[a-zA-Z]+";
 
+    private String bisherGeratenesWort;
+
     public Galgenmaennchen(String zuRatendesWort) {
+        zuRatendesWort = cleanUp(zuRatendesWort);
         validateWort(zuRatendesWort);
-        this.zuRatendesWort = cleanUp(zuRatendesWort);
+        this.zuRatendesWort = zuRatendesWort;
+        bisherGeratenesWort = createRatefeld(zuRatendesWort.length());
+    }
+
+    private String createRatefeld(int length) {
+        return "-".repeat(Math.max(0, length));
     }
 
     private void validateWort(String wort) {
@@ -26,17 +34,17 @@ public class Galgenmaennchen {
                 .replace("ß", "ss");
     }
 
-    public String getZuRatendesWort() {
-        return zuRatendesWort;
-    }
-
     public String rateBuchstabe(String buchstabe) {
         validateBuchstabe(buchstabe);
         buchstabe = buchstabe.toLowerCase();
         if (zuRatendesWort.contains(buchstabe))
-        return buchstabe;
+            manipuliereBisherGeratenesWort(buchstabe);
 
-        return "-";
+        return bisherGeratenesWort;
+    }
+
+    private void manipuliereBisherGeratenesWort(String buchstabe) {
+
     }
 
     private void validateBuchstabe(String buchstabe) {

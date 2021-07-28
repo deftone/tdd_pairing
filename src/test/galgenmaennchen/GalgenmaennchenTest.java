@@ -20,6 +20,13 @@ public class GalgenmaennchenTest {
         Assertions.assertEquals("x", galgenmaennchenDefault.rateBuchstabe("x"));
     }
 
+    @Test
+    void testeWort() {
+        galgenmaennchen = new Galgenmaennchen("ab");
+        Assertions.assertEquals("--", galgenmaennchen.rateBuchstabe("c"));
+        Assertions.assertEquals("a-", galgenmaennchen.rateBuchstabe("a"));
+        Assertions.assertEquals("ab", galgenmaennchen.rateBuchstabe("b"));
+    }
 
     @ParameterizedTest
     @ValueSource(strings = {"xx", "!", "#", "@", "1", "ü", "ß"})
@@ -34,11 +41,11 @@ public class GalgenmaennchenTest {
         Assertions.assertEquals(buchstabe.toLowerCase(), galgenmaennchen.rateBuchstabe(buchstabe));
     }
 
-    @Test
-    void testeEingabewortUmwandeln(){
-        galgenmaennchen = new Galgenmaennchen("AbcÜöÄß");
-        Assertions.assertEquals("abcueoeaess", galgenmaennchen.getZuRatendesWort());
-    }
+//    @Test
+//    void testeEingabewortUmwandeln(){
+//        galgenmaennchen = new Galgenmaennchen("AbcÜöÄß");
+//        Assertions.assertEquals("abcueoeaess", galgenmaennchen.getZuRatendesWort());
+//    }
 
     @ParameterizedTest
     @ValueSource(strings = {"!", "#", "@FDA", "AD1"})
