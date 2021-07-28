@@ -5,8 +5,9 @@ public class Galgenmaennchen {
 
     private final String zuRatendesWort;
     private String bisherGeratenesWort;
-    private final String LETTER_VALIDATOR = "[a-zA-Z]";
-    private final String WORD_VALIDATOR = "[a-zA-Z]+";
+    private int fehlversuche;
+    private static final String LETTER_VALIDATOR = "[a-zA-Z]";
+    private static final String WORD_VALIDATOR = "[a-zA-Z]+";
 
 
     public Galgenmaennchen(String zuRatendesWort) {
@@ -35,39 +36,39 @@ public class Galgenmaennchen {
     }
 
     public String rateBuchstabe(String buchstabe) {
+        if (fehlversuche > 10) {
+            return "Spiel vorbei!";
+        }
         validateBuchstabe(buchstabe);
         buchstabe = buchstabe.toLowerCase();
         if (zuRatendesWort.contains(buchstabe)) {
             manipuliereBisherGeratenesWort(buchstabe);
+            if (bisherGeratenesWort.equals(zuRatendesWort))
+                return "Das Wort '" + zuRatendesWort + "' ist richtig!";
+        } else {
+            fehlversuche++;
+        }
+        if (fehlversuche > 10) {
+            return "Loser";
         }
         return bisherGeratenesWort;
     }
 
     private void manipuliereBisherGeratenesWort(String buchstabe) {
 
-        //meine alternative braucht eine zusaetzliche instanzvariable
-//            private List<Character> alleBisherRichtigenBuchstaben = new ArrayList<>();
-//            alleBisherRichtigenBuchstaben.add(buchstabe.charAt(0));
-
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (Character letter : zuRatendesWort.toCharArray()) {
-//                if (alleBisherRichtigenBuchstaben.contains(letter)){
-//                    stringBuilder.append(letter);
-//                } else {
-//                    stringBuilder.append("-");
-//                }
-//            }
-
-        //manuels idee braucht eine variable weniger:
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < zuRatendesWort.length(); i++) {
-            if (buchstabe.equals(zuRatendesWort.substring(i, i + 1))) {
-                stringBuilder.append(zuRatendesWort.charAt(i));
+        for (Character letter : zuRatendesWort.toCharArray()) {
+            if (buchstabe.equals(letter.toString())) {
+                stringBuilder.append(letter);
             } else {
-                stringBuilder.append(bisherGeratenesWort.charAt(i));
+                stringBuilder.append(getBisherigenBuchstaben(letter));
             }
         }
         bisherGeratenesWort = stringBuilder.toString();
+    }
+
+    private char getBisherigenBuchstaben(Character letter) {
+        return bisherGeratenesWort.charAt(zuRatendesWort.indexOf(letter));
     }
 
     private void validateBuchstabe(String buchstabe) {
