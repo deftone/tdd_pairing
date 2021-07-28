@@ -4,7 +4,6 @@ import main.galgenmaennchen.Galgenmaennchen;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,11 +20,25 @@ public class GalgenmaennchenTest {
     }
 
     @Test
-    void testeWort() {
-        galgenmaennchen = new Galgenmaennchen("ab");
-        Assertions.assertEquals("--", galgenmaennchen.rateBuchstabe("c"));
-        Assertions.assertEquals("a-", galgenmaennchen.rateBuchstabe("a"));
-        Assertions.assertEquals("ab", galgenmaennchen.rateBuchstabe("b"));
+    void testeWortEinfach() {
+        galgenmaennchen = new Galgenmaennchen("abax");
+        Assertions.assertEquals("----", galgenmaennchen.rateBuchstabe("c"));
+        Assertions.assertEquals("a-a-", galgenmaennchen.rateBuchstabe("a"));
+        Assertions.assertEquals("a-a-", galgenmaennchen.rateBuchstabe("d"));
+        Assertions.assertEquals("aba-", galgenmaennchen.rateBuchstabe("b"));
+    }
+
+    @Test
+    void testeEingabewortUmwandelnInklUmlaute(){
+        galgenmaennchen = new Galgenmaennchen("AbcÜöÄß");
+        Assertions.assertEquals("a------a---", galgenmaennchen.rateBuchstabe("A"));
+        Assertions.assertEquals("ab-----a---", galgenmaennchen.rateBuchstabe("b"));
+        Assertions.assertEquals("abc----a---", galgenmaennchen.rateBuchstabe("c"));
+        Assertions.assertEquals("abc-e-eae--", galgenmaennchen.rateBuchstabe("e"));
+        Assertions.assertEquals("abcue-eae--", galgenmaennchen.rateBuchstabe("u"));
+        Assertions.assertEquals("abcueoeae--", galgenmaennchen.rateBuchstabe("o"));
+        Assertions.assertEquals("abcueoeae--", galgenmaennchen.rateBuchstabe("x"));
+        Assertions.assertEquals("abcueoeaess", galgenmaennchen.rateBuchstabe("s"));
     }
 
     @ParameterizedTest
@@ -40,12 +53,6 @@ public class GalgenmaennchenTest {
         galgenmaennchen = new Galgenmaennchen(buchstabe);
         Assertions.assertEquals(buchstabe.toLowerCase(), galgenmaennchen.rateBuchstabe(buchstabe));
     }
-
-//    @Test
-//    void testeEingabewortUmwandeln(){
-//        galgenmaennchen = new Galgenmaennchen("AbcÜöÄß");
-//        Assertions.assertEquals("abcueoeaess", galgenmaennchen.getZuRatendesWort());
-//    }
 
     @ParameterizedTest
     @ValueSource(strings = {"!", "#", "@FDA", "AD1"})

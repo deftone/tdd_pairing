@@ -37,14 +37,37 @@ public class Galgenmaennchen {
     public String rateBuchstabe(String buchstabe) {
         validateBuchstabe(buchstabe);
         buchstabe = buchstabe.toLowerCase();
-        if (zuRatendesWort.contains(buchstabe))
+        if (zuRatendesWort.contains(buchstabe)) {
             manipuliereBisherGeratenesWort(buchstabe);
-
+        }
         return bisherGeratenesWort;
     }
 
     private void manipuliereBisherGeratenesWort(String buchstabe) {
 
+        //meine alternative braucht eine zusaetzliche instanzvariable
+//            private List<Character> alleBisherRichtigenBuchstaben = new ArrayList<>();
+//            alleBisherRichtigenBuchstaben.add(buchstabe.charAt(0));
+
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (Character letter : zuRatendesWort.toCharArray()) {
+//                if (alleBisherRichtigenBuchstaben.contains(letter)){
+//                    stringBuilder.append(letter);
+//                } else {
+//                    stringBuilder.append("-");
+//                }
+//            }
+
+        //manuels idee braucht eine variable weniger:
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < zuRatendesWort.length(); i++) {
+            if (buchstabe.equals(zuRatendesWort.substring(i, i + 1))) {
+                stringBuilder.append(zuRatendesWort.charAt(i));
+            } else {
+                stringBuilder.append(bisherGeratenesWort.charAt(i));
+            }
+        }
+        bisherGeratenesWort = stringBuilder.toString();
     }
 
     private void validateBuchstabe(String buchstabe) {
