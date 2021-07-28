@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class GalgenmaennchenTest {
 
     private Galgenmaennchen galgenmaennchen;
-    private Galgenmaennchen galgenmaennchenDefault = new Galgenmaennchen("x");
+    private final Galgenmaennchen galgenmaennchenDefault = new Galgenmaennchen("x");
 
 
     @Test

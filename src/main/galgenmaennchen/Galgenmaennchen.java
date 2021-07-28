@@ -4,10 +4,10 @@ package main.galgenmaennchen;
 public class Galgenmaennchen {
 
     private final String zuRatendesWort;
+    private String bisherGeratenesWort;
     private final String LETTER_VALIDATOR = "[a-zA-Z]";
     private final String WORD_VALIDATOR = "[a-zA-Z]+";
 
-    private String bisherGeratenesWort;
 
     public Galgenmaennchen(String zuRatendesWort) {
         zuRatendesWort = cleanUp(zuRatendesWort);
