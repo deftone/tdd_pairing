@@ -9,6 +9,10 @@ public class Encrypter {
     private static final Map<Character, Integer> alphabetIndex = new HashMap<>();
     private int offset = 0;
 
+    public int getOffset() {
+        return offset;
+    }
+
     static {
         alphabetIndex.put('A', 1);
         alphabetIndex.put('B', 2);
@@ -42,7 +46,7 @@ public class Encrypter {
         this.offset = offset % 26;
     }
 
-    public String rot13(String word) {
+    public String rotateCharacters(String word) {
         word = cleanUp(word);
 
         StringBuilder sb = new StringBuilder();
@@ -57,6 +61,13 @@ public class Encrypter {
         return sb.toString();
     }
 
+    private String cleanUp(String word) {
+        return word.toUpperCase()
+                .replace("Ö", "OE")
+                .replace("Ä", "AE")
+                .replace("Ü", "UE");
+    }
+
     private Character getRotatedCharacter(Integer index) {
         Optional<Map.Entry<Character, Integer>> rotatedCharacter =
                 alphabetIndex.entrySet()
@@ -66,15 +77,12 @@ public class Encrypter {
         if(rotatedCharacter.isPresent()){
             return rotatedCharacter.get().getKey();
         }
-        return null;
+
+        // null zurueck geben finde ich hier unsauber, besser eine exception werfen
+        // die ist aber gar nicht testbar, es sei denn wir machen den code (d.h. den static block) kaputt
+        throw new RuntimeException("der charakter wurde nicht gefunden!");
     }
 
-    private String cleanUp(String word) {
-        return word.toUpperCase()
-                .replace("Ö", "OE")
-                .replace("Ä", "AE")
-                .replace("Ü", "UE");
-    }
 
     private boolean isRotatedIndex(Map.Entry<Character, Integer> i, Integer index) {
         if (isIndexOverflown(index)) {
