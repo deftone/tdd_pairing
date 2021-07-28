@@ -5,12 +5,30 @@ public class Galgenmaennchen {
 
     private final String zuRatendesWort;
     private final String LETTER_VALIDATOR = "[a-zA-Z]";
+    private final String WORD_VALIDATOR = "[a-zA-Z]+";
 
     public Galgenmaennchen(String zuRatendesWort) {
-        //todo validieren
-        this.zuRatendesWort = zuRatendesWort.toLowerCase();
+        validateWort(zuRatendesWort);
+        this.zuRatendesWort = cleanUp(zuRatendesWort);
     }
 
+    private void validateWort(String wort) {
+        if (!wort.matches(WORD_VALIDATOR)) {
+            throw new IllegalArgumentException("Nur Buchstabend, keine Zahlen o.ae. eingeben!");
+        }
+    }
+
+    private String cleanUp(String wort) {
+        return wort.toLowerCase()
+                .replace("ö", "oe")
+                .replace("ä", "ae")
+                .replace("ü", "ue")
+                .replace("ß", "ss");
+    }
+
+    public String getZuRatendesWort() {
+        return zuRatendesWort;
+    }
 
     public String rateBuchstabe(String buchstabe) {
         validateBuchstabe(buchstabe);
@@ -30,4 +48,6 @@ public class Galgenmaennchen {
             throw new IllegalArgumentException("Nur Buchstabend, keine Zahlen o.ae. eingeben!");
         }
     }
+
+
 }

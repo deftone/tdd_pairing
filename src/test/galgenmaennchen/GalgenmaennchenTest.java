@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class GalgenmaennchenTest {
@@ -21,16 +22,28 @@ public class GalgenmaennchenTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"xx", "!", "#", "@", "1"})
+    @ValueSource(strings = {"xx", "!", "#", "@", "1", "ü", "ß"})
     void testeFehleingabe(String fehleingabe) {
         Assertions.assertThrows(IllegalArgumentException.class, () -> galgenmaennchenDefault.rateBuchstabe(fehleingabe));
     }
-    //umlaute
 
     @ParameterizedTest
     @ValueSource(strings = {"a", "z", "A", "Z"})
     void testeRegex(String buchstabe) {
         galgenmaennchen = new Galgenmaennchen(buchstabe);
         Assertions.assertEquals(buchstabe.toLowerCase(), galgenmaennchen.rateBuchstabe(buchstabe));
+    }
+
+    @Test
+    void testeEingabewortUmwandeln(){
+        galgenmaennchen = new Galgenmaennchen("AbcÜöÄß");
+        Assertions.assertEquals("abcueoeaess", galgenmaennchen.getZuRatendesWort());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"!", "#", "@FDA", "AD1"})
+    @EmptySource
+    void testeEingabewortFehleingabe(String fehlwort) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Galgenmaennchen(fehlwort));
     }
 }
