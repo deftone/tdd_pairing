@@ -42,7 +42,7 @@ public class Encrypter {
         alphabetIndex.put('Z', 26);
     }
 
-    public Encrypter(int offset){
+    public Encrypter(int offset) {
         this.offset = offset % 26;
     }
 
@@ -74,13 +74,11 @@ public class Encrypter {
                         .stream()
                         .filter(i -> isRotatedIndex(i, index))
                         .findFirst();
-        if(rotatedCharacter.isPresent()){
+        if (rotatedCharacter.isPresent()) {
             return rotatedCharacter.get().getKey();
         }
 
-        // null zurueck geben finde ich hier unsauber, besser eine exception werfen
-        // die ist aber gar nicht testbar, es sei denn wir machen den code (d.h. den static block) kaputt
-        throw new RuntimeException("der charakter wurde nicht gefunden!");
+        throw new RuntimeException("der charakter fuer " + index + "wurde nicht gefunden!");
     }
 
 
